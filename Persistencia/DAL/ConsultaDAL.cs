@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Persistencia.DAL
 {
-   public class ConsultaDAL
+    public class ConsultaDAL
     {
         private EFContext context = new EFContext();
-        public IQueryable<Consulta> ObterConsultasClassificadosPorNome()
+        public IQueryable<Consulta> ObterConsultasClassificadasPorData()
         {
             return context.Consultas.Include(c => c.Exame).OrderBy(n => n.data_hora);
         }
@@ -20,7 +21,7 @@ namespace Persistencia.DAL
         {
             return context.Consultas.Where(p => p.ConsultaId == id).Include(c => c.Exame).First();
         }
-        public void GravarProduto(Consulta consulta)
+        public void GravarConsulta(Consulta consulta)
         {
             if (consulta.ConsultaId == null)
             {

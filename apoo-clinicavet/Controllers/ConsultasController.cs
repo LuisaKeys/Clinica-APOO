@@ -8,109 +8,131 @@ using System.Web;
 using System.Web.Mvc;
 using Modelo.Models;
 using Persistencia.Context;
+using apoo_clinicavet.Servico;
+using Servico.Cadastros;
+using System.Runtime.Remoting.Contexts;
 
 namespace apoo_clinicavet.Controllers
 {
     public class ConsultasController : Controller
     {
-        private EFContext context = new EFContext();
-
-        // GET: Consultas
-        public ActionResult Index()
+        private ActionResult ObterVisaoConsultaPorId(long? id)
         {
-            var consultas = context.Consultas.Include(c => c.Exame);
-            return View(consultas.ToList());
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Consulta consulta = consultaServico.ObterConsultaPorId((long)id);
+            if (consulta == null)
+            {
+                return HttpNotFound();
+            }
+            return View(consulta);
         }
 
-        // GET: Consultas/Create
+        // Metodo Privado
+        private void PopularViewBag(Consulta consulta = null)
+        {
+            if (consulta == null)
+            {
+                ViewBag.ExameId = new SelectList(exameServico.ObterExamesClassificadosPorDesc(),
+                "ExameId", "Descricao");
+            }
+            else
+            {
+                ViewBag.ExameId = new SelectList(exameServico.ObterExamesClassificadosPorDesc(),
+                "ExameId", "Descricao", consulta.ExameId);
+            }
+        }
+
+        // Metodo Privado
+        private ActionResult GravarConsulta(Consulta consulta)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    consultaServico.GravarConsulta(consulta);
+                    return RedirectToAction("Index");
+                }
+                return View(consulta);
+            }
+            catch
+            {
+                PopularViewBag(consulta);
+                return View(consulta);
+            }
+        }
+
+        private ConsultaServico consultaServico = new ConsultaServico();
+        private ExameServico exameServico = new ExameServico();
+        
+        // GET: Produtos
+        public ActionResult Index()
+        { 
+            return View(consultaServico.ObterConsultasClassificadasPorData());
+        }
+
+        // GET: Produtos/Create
         public ActionResult Create()
         {
-            ViewBag.ExameId = new SelectList(context.Exames, "ExameId", "Descricao");
+            PopularViewBag();
             return View();
         }
 
-        // POST: Consultas/Create
-
+        // POST: Produtos/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ConsultaId,data_hora,Sintomas,ExameId")] Consulta consulta)
+        public ActionResult Create(Consulta consulta)
         {
             if (ModelState.IsValid)
             {
-                context.Consultas.Add(consulta);
-                context.SaveChanges();
+                consultaServico.GravarConsulta(consulta);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ExameId = new SelectList(context.Exames, "ExameId", "Descricao", consulta.ExameId);
+            ViewBag.ExameId = new SelectList(exameServico.ObterExamesClassificadosPorDesc(), "ExameId", "Descricao", consulta.ExameId);
             return View(consulta);
         }
 
-        // GET: Consultas/Edit/5
+        // GET: Produtos/Edit/5
         public ActionResult Edit(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Consulta consulta = context.Consultas.Find(id);
-            if (consulta == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ExameId = new SelectList(context.Exames, "ExameId", "Descricao", consulta.ExameId);
-            return View(consulta);
+            return ObterVisaoConsultaPorId(id);
         }
 
-        // POST: Consultas/Edit/5
-        
+        // POST: Produtos/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ConsultaId,data_hora,Sintomas,ExameId")] Consulta consulta)
+        public ActionResult Edit(Consulta consulta)
         {
-            if (ModelState.IsValid)
-            {
-                context.Entry(consulta).State = EntityState.Modified;
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ExameId = new SelectList(context.Exames, "ExameId", "Descricao", consulta.ExameId);
-            return View(consulta);
+            return GravarConsulta(consulta);
         }
 
-        // GET: Consultas/Delete/5
+        // GET: Produtos/Details/5
+        public ActionResult Details(long? id)
+        {
+            return ObterVisaoConsultaPorId(id);
+        }
+
+        // GET: Produtos/Delete/5
         public ActionResult Delete(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Consulta consulta = context.Consultas.Find(id);
-            if (consulta == null)
-            {
-                return HttpNotFound();
-            }
-            return View(consulta);
+            return ObterVisaoConsultaPorId(id);
         }
 
-        // POST: Consultas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        // POST: Produtos/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
         {
-            Consulta consulta = context.Consultas.Find(id);
-            context.Consultas.Remove(consulta);
-            context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            try
             {
-                context.Dispose();
+                Consulta consulta = consultaServico.EliminarConsultaPorId(id);
+                TempData["Message"] = "Consulta de Exame " + consulta.Exame.Descricao.ToUpper() + " foi removida";
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            catch
+            {
+                return View();
+            }
         }
     }
 }
+

@@ -8,102 +8,100 @@ using System.Web;
 using System.Web.Mvc;
 using Modelo.Models;
 using Persistencia.Context;
+using apoo_clinicavet.Servico;
 
 namespace apoo_clinicavet.Controllers
 {
     public class ExamesController : Controller
     {
-        private EFContext context = new EFContext();
+        private ExameServico exameServico = new ExameServico();
+        private ActionResult ObterVisaoExamePorId(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(
+                HttpStatusCode.BadRequest);
+            }
+            Exame exame = exameServico.ObterExamePorId((long)id);
+            if (exame == null)
+            {
+                return HttpNotFound();
+            }
+            return View(exame);
+        }
 
- 
+        private ActionResult GravarExame(Exame exame)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    exameServico.GravarExame(exame);
+                    return RedirectToAction("Index");
+                }
+                return View(exame);
+            }
+            catch
+            {
+                return View(exame);
+            }
+        }
         // GET: Exames
         public ActionResult Index()
         {
-            return View(context.Exames.ToList());
+            return View(exameServico.ObterExamesClassificadosPorDesc());
         }
-
-        // GET: Exames/Create
+        // GET: Create
         public ActionResult Create()
         {
             return View();
         }
 
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ExameId,Descricao")] Exame exame)
+        public ActionResult Create(Exame exame)
         {
-            if (ModelState.IsValid)
-            {
-                context.Exames.Add(exame);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(exame);
+            return GravarExame(exame);
         }
-
-        // GET: Exames/Edit/5
+        // GET: Edit
         public ActionResult Edit(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Exame exame = context.Exames.Find(id);
-            if (exame == null)
-            {
-                return HttpNotFound();
-            }
-            return View(exame);
+            return ObterVisaoExamePorId(id);
         }
-
-        // POST: Exames/Edit/5
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ExameId,Descricao")] Exame exame)
+        public ActionResult Edit(Exame exame)
         {
-            if (ModelState.IsValid)
-            {
-                context.Entry(exame).State = EntityState.Modified;
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(exame);
+            return GravarExame(exame);
+        }
+        // GET: Details
+        public ActionResult Details(long? id)
+        {
+            return ObterVisaoExamePorId(id);
         }
 
-        // GET: Exames/Delete/5
+        // GET: Delete
         public ActionResult Delete(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Exame exame = context.Exames.Find(id);
-            if (exame == null)
-            {
-                return HttpNotFound();
-            }
-            return View(exame);
+            return ObterVisaoExamePorId(id);
         }
-
-        // POST: Exames/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Delete
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult Delete(long id)
         {
-            Exame exame = context.Exames.Find(id);
-            context.Exames.Remove(exame);
-            context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            try
             {
-                context.Dispose();
+                Exame exame = exameServico.EliminarExamePorId(id);
+                TempData["Message"] = "Fabricante " + exame.Descricao.ToUpper() + " foi removido";
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            catch
+            {
+                return View();
+            }
         }
     }
 }

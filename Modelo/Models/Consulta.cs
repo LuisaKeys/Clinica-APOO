@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.WebPages.Html;
 
 namespace Modelo.Models
 {
@@ -17,5 +18,6 @@ namespace Modelo.Models
         [DisplayName("Exame")]
         public long? ExameId { get; set; }
         public Exame Exame { get; set; }
+       
     }
 }

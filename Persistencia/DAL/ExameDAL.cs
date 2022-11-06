@@ -10,10 +10,10 @@ using Modelo.Models;
 
 namespace Persistencia.DAL
 {
-    class ExameDAL
+    public class ExameDAL
     {
         private EFContext context = new EFContext();
-        public IQueryable<Exame> ObterExamesClassificadasPorDesc()
+        public IQueryable<Exame> ObterExamesClassificadosPorDesc()
         {
             return context.Exames.OrderBy(b => b.Descricao);
         }

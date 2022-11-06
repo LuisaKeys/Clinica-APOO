@@ -18,8 +18,11 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("Clínica veterínária", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Consultas", "Index", "Consultas", new { area = "" }, new {@class = "navbar-text navbar-right" })
-                @Html.ActionLink("Exames", "Index", "Exames", new { area = "" }, new { @class = "navbar-text navbar-right" })
+            <div class="navbar-right">
+                @Html.ActionLink("Consultas", "Index", "Consultas", new { area = "" }, new { @class = "navbar-text" })
+                @Html.ActionLink("Exames", "Index", "Exames", new { area = "" }, new { @class = "navbar-text" })
+            </div>
+               
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
