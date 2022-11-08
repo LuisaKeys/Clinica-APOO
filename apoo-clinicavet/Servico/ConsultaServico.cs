@@ -11,21 +11,21 @@ namespace Servico.Cadastros
     public class ConsultaServico
     {
         private ConsultaDAL consultaDAL = new ConsultaDAL();
-        public IQueryable<Consulta> ObterConsultasClassificadasPorData()
-        {
-            return consultaDAL.ObterConsultasClassificadasPorData();
-        }
-        public Consulta ObterConsultaPorId(long id)
-        {
-            return consultaDAL.ObterConsultaPorId(id);
-        }
+        //public IQueryable<Consulta> ObterConsultasClassificadasPorData()
+        //{
+        //    return consultaDAL.ObterConsultasClassificadasPorData();
+        //}
+        //public Consulta ObterConsultaPorId(long id)
+        //{
+        //    return consultaDAL.ObterConsultaPorId(id);
+        //}
         public void GravarConsulta(Consulta consulta)
         {
             consultaDAL.GravarConsulta(consulta);
         }
-        public Consulta EliminarConsultaPorId(long id)
-        {
-            return consultaDAL.EliminarConsultaPorId(id);
-        }
+        //public Consulta EliminarConsultaPorId(long id)
+        //{
+        //    return consultaDAL.EliminarConsultaPorId(id);
+        //}
     }
 }

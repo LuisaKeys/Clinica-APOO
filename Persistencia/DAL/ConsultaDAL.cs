@@ -13,14 +13,14 @@ namespace Persistencia.DAL
     public class ConsultaDAL
     {
         private EFContext context = new EFContext();
-        public IQueryable<Consulta> ObterConsultasClassificadasPorData()
-        {
-            return context.Consultas.Include(c => c.Exame).OrderBy(n => n.data_hora);
-        }
-        public Consulta ObterConsultaPorId(long id)
-        {
-            return context.Consultas.Where(p => p.ConsultaId == id).Include(c => c.Exame).First();
-        }
+        //public IQueryable<Consulta> ObterConsultasClassificadasPorData()
+        //{
+        //    //return context.Consultas.Include(c => c.Exame).OrderBy(n => n.data_hora);
+        //}
+        //public Consulta ObterConsultaPorId(long id)
+        //{
+        //    return context.Consultas.Where(p => p.ConsultaId == id).Include(c => c.Exame).First();
+        //}
         public void GravarConsulta(Consulta consulta)
         {
             if (consulta.ConsultaId == null)
@@ -33,12 +33,12 @@ namespace Persistencia.DAL
             }
             context.SaveChanges();
         }
-        public Consulta EliminarConsultaPorId(long id)
-        {
-            Consulta consulta = ObterConsultaPorId(id);
-            context.Consultas.Remove(consulta);
-            context.SaveChanges();
-            return consulta;
-        }
+        //public Consulta EliminarConsultaPorId(long id)
+        //{
+        //    Consulta consulta = ObterConsultaPorId(id);
+        //    context.Consultas.Remove(consulta);
+        //    context.SaveChanges();
+        //    return consulta;
+        //}
     }
 }

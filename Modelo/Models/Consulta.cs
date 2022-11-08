@@ -10,14 +10,18 @@ namespace Modelo.Models
 {
     public class Consulta
     {
+        public Consulta()
+        {
+            this.Exames = new HashSet<Exame>().ToList();
+        }
         [DisplayName("Id")]
-        public long ConsultaId { get; set; }
+        public int ConsultaId { get; set; }
         [DisplayName("Data")]
         public DateTime data_hora { get; set; }
         public string Sintomas { get; set; }
         [DisplayName("Exame")]
-        public long? ExameId { get; set; }
-        public Exame Exame { get; set; }
-       
+        
+        public List<Exame> Exames { get; set; }
+
     }
 }
