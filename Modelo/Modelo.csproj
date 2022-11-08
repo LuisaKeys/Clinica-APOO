@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Consulta.cs" />
+    <Compile Include="Models\Especie.cs" />
     <Compile Include="Models\Exame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

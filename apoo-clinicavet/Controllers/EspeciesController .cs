@@ -12,44 +12,44 @@ using apoo_clinicavet.Servico;
 
 namespace apoo_clinicavet.Controllers
 {
-    public class ExamesController : Controller
+    public class EspeciesController : Controller
     {
-        private ExameServico exameServico = new ExameServico();
-        private ActionResult ObterVisaoExamePorId(long? id)
+        private EspecieServico especieServico = new EspecieServico();
+        private ActionResult ObterVisaoEspeciePorId(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(
                 HttpStatusCode.BadRequest);
             }
-            Exame exame = exameServico.ObterExamePorId((long)id);
-            if (exame == null)
+            Especie especie = especieServico.ObterEspeciePorId((long)id);
+            if (especie == null)
             {
                 return HttpNotFound();
             }
-            return View(exame);
+            return View(especie);
         }
 
-        private ActionResult GravarExame(Exame exame)
+        private ActionResult GravarEspecie(Especie especie)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    exameServico.GravarExame(exame);
+                    especieServico.GravarEspecie(especie);
                     return RedirectToAction("Index");
                 }
-                return View(exame);
+                return View(especie);
             }
             catch
             {
-                return View(exame);
+                return View(especie);
             }
         }
-        // GET: Exames
+        // GET: Especies
         public ActionResult Index()
         {
-            return View(exameServico.ObterExamesClassificadosPorDesc());
+            return View(especieServico.ObterEspeciesClassificadasPorNome());
         }
         // GET: Create
         public ActionResult Create()
@@ -60,32 +60,32 @@ namespace apoo_clinicavet.Controllers
         // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Exame exame)
+        public ActionResult Create(Especie especie)
         {
-            return GravarExame(exame);
+            return GravarEspecie(especie);
         }
         // GET: Edit
         public ActionResult Edit(long? id)
         {
-            return ObterVisaoExamePorId(id);
+            return ObterVisaoEspeciePorId(id);
         }
         // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Exame exame)
+        public ActionResult Edit(Especie especie)
         {
-            return GravarExame(exame);
+            return GravarEspecie(especie);
         }
         // GET: Details
         public ActionResult Details(long? id)
         {
-            return ObterVisaoExamePorId(id);
+            return ObterVisaoEspeciePorId(id);
         }
 
         // GET: Delete
         public ActionResult Delete(long? id)
         {
-            return ObterVisaoExamePorId(id);
+            return ObterVisaoEspeciePorId(id);
         }
         // POST: Delete
         [HttpPost]
@@ -94,8 +94,8 @@ namespace apoo_clinicavet.Controllers
         {
             try
             {
-                Exame exame = exameServico.EliminarExamePorId(id);
-                TempData["Message"] = "Exame " + exame.Descricao.ToUpper() + " foi removido";
+                Especie especie = especieServico.EliminarEspeciePorId(id);
+                TempData["Message"] = "Espécie " + especie.Nome.ToUpper() + " foi removida";
                 return RedirectToAction("Index");
             }
             catch

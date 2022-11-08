@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Context\EFContext.cs" />
     <Compile Include="DAL\ConsultaDAL.cs" />
+    <Compile Include="DAL\EspecieDAL.cs" />
     <Compile Include="DAL\ExameDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
