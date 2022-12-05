@@ -17,6 +17,10 @@ namespace Persistencia.DAL
         {
             return context.Exames.OrderBy(b => b.Descricao);
         }
+        public IQueryable<Exame> TodosExamesBD()
+        {
+            return context.Exames;
+        }
         public Exame ObterExamePorId(long id)
         {
             return context.Exames.Where(c => c.Id == id).First();

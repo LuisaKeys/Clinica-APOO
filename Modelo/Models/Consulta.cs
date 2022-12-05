@@ -21,7 +21,7 @@ namespace Modelo.Models
         public DateTime data_hora { get; set; }
         public string Sintomas { get; set; }
         public virtual ICollection<Exame> Exames { get; set; }
-        public int? PetId { get; set; }
+        public long? PetId { get; set; }
         public Pet Pet { get; set; }
         public int? VeterinarioId { get; set; }
         public Veterinario Veterinario { get; set; }
