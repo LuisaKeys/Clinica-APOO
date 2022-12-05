@@ -1,33 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Modelo.Models;
 using Relacionamento.Servico;
+using Persistencia.DAL;
+using Modelo.Models;
+using System.Net;
 
 namespace Relacionamento.Controllers
 {
     public class PetController : Controller
     {
+        private PetServico petServico = new PetServico();
+        private ClienteServico clienteServico = new ClienteServico();
+        private EspecieServico especieServico = new EspecieServico();
+
+        //Pega os detalhes do produto de acordo com o id, serve para diminuir a redundância na hora de mostrar vz
         private ActionResult ObterVisaoPetPorId(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pet pet = petServico.ObterPetPorId((long)id);
+            Pet pet = petServico.ObterPetPorId(long? id);
             if (pet == null)
             {
                 return HttpNotFound();
             }
             return View(pet);
         }
+        // Serve para popular combobox
+        private void PopularViewBag(Pet pet = null)
+        {
+            if (pet == null)
+            {
+                ViewBag.ClienteId = new SelectList(clienteServico.ObterClientesClassificadosPorNome(),
+                "CategoriaId", "Nome");
+                ViewBag.EspecieId = new SelectList(especieServico.ObterEspeciesClassificadasPorNome(),
+                "EstudioId", "Nome");
+            }
+            else
+            {
+                ViewBag.ClienteId = new SelectList(clienteServico.ObterClientesClassificadosPorNome(),
+                "CategoriaId", "Nome", pet.ClienteId);
+                ViewBag.EstudioId = new SelectList(especieServico.ObterEspeciesClassificadasPorNome(),
+                "EspecieId", "Nome", pet.EspecieId);
+            }
+        }
 
-        // Metodo Privado
+        // Salva os produtos
         private ActionResult GravarPet(Pet pet)
         {
             try
@@ -37,84 +59,85 @@ namespace Relacionamento.Controllers
                     petServico.GravarPet(pet);
                     return RedirectToAction("Index");
                 }
+                petServico.GravarPet(pet);
+                PopularViewBag(pet);
                 return View(pet);
             }
             catch
             {
+                PopularViewBag(pet);
                 return View(pet);
             }
         }
 
-        private PetServico petServico = new PetServico();
-        private ClienteServico clienteServico = new ClienteServico();
-        private EspecieServico especieServico = new EspecieServico();
-
-        // GET: Pets
+        //---------------------- ACTIONS ABAIXO -----------------------//
+        //GET: Produtos
+        [Authorize(Roles = "Administradores")]
         public ActionResult Index()
         {
             return View(petServico.ObterPetsClassificadosPorNome());
         }
 
-        // GET: Pets/Details/5
-        public ActionResult Details(long? id)
-        {
-            return ObterVisaoPetPorId(id);
-        }
 
-        // GET: Pets/Create
+        //// GET: Produto/Details/5
+        //[Authorize]
+        //public ActionResult Details(long? id)
+        //{
+        //    return ObterVisaoProdutoPorId(id);
+        //}
+
+        // GET: Produto/Create
+        [Authorize]
         public ActionResult Create()
         {
-            ViewBag.ClienteId = new SelectList(clienteServico.ObterClientesClassificadosPorNome(), "Id", "Nome");
-            ViewBag.EspecieId = new SelectList(especieServico.ObterEspeciesClassificadasPorNome(), "Id", "Nome");
+            PopularViewBag();
             return View();
         }
 
-        // POST: Pets/Create
+        // POST: Produtos/Create
         [HttpPost]
         public ActionResult Create(Pet pet)
         {
-            ViewBag.ClienteId = new SelectList(clienteServico.ObterClientesClassificadosPorNome(), "Id", "Nome");
-            ViewBag.EspecieId = new SelectList(especieServico.ObterEspeciesClassificadasPorNome(), "Id", "Nome");
             return GravarPet(pet);
         }
 
-        // GET: Pets/Edit/5
-        public ActionResult Edit(long? id)
-        {
-            ViewBag.ClienteId = new SelectList(clienteServico.ObterClientesClassificadosPorNome(), "Id", "Nome");
-            ViewBag.EspecieId = new SelectList(especieServico.ObterEspeciesClassificadasPorNome(), "Id", "Nome");
-            return ObterVisaoPetPorId(id);
-        }
+        //// GET: Produto/Edit/5
+        //[Authorize]
+        //public ActionResult Edit(long? id)
+        //{
+        //    PopularViewBag(produtoServico.ObterProdutoPorId((long)id));
+        //    return ObterVisaoProdutoPorId(id);
+        //}
 
-        // POST: Pets/Edit/5
-        [HttpPost]
-        public ActionResult Edit(Pet pet)
-        {
-            ViewBag.ClienteId = new SelectList(clienteServico.ObterClientesClassificadosPorNome(), "ClienteId", "Nome");
-            ViewBag.EspecieId = new SelectList(especieServico.ObterEspeciesClassificadasPorNome(), "EspecieId", "Nome");
-            return GravarPet(pet);
-        }
+        //// POST: Produto/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(Produto produto, HttpPostedFileBase upimg = null, string chkRemoverImagem = null)
+        //{
+        //    return GravarProduto(produto, upimg, chkRemoverImagem);
+        //}
 
-        // GET: Pets/Delete/5
-        public ActionResult Delete(long? id)
-        {
-            return ObterVisaoPetPorId(id);
-        }
+        //// GET: Produto/Delete/5
+        //[Authorize]
+        //public ActionResult Delete(long? id)
+        //{
+        //    return ObterVisaoProdutoPorId(id);
+        //}
 
-        // POST: Pets/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                Pet pet = petServico.EliminarPetPorId(id);
-                TempData["Message"] = "Pet " + pet.Nome.ToUpper() + " foi removido";
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: Produto/Delete/5
+        //[HttpPost]
+        //public ActionResult Delete(int id, FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        Produto produto = produtoServico.EliminarProdutoPorId(id);
+        //        TempData["Message"] = "Produto " + produto.Nome.ToUpper() + " foi removido";
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }

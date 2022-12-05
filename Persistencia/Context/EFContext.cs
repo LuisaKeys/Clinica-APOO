@@ -24,7 +24,7 @@ namespace Persistencia.Context
             public DbSet<Especie> Especies { get; set; }
             public DbSet<Veterinario> Veterinarios { get; set; }
             public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Pet> Pets { get; set; }
+            public DbSet<Pet> Pets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
             {

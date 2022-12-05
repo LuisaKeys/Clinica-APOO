@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Persistencia.DAL;
 using Modelo.Models;
+using Persistencia.DAL;
 
 namespace Relacionamento.Servico
 {

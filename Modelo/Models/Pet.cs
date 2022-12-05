@@ -9,7 +9,11 @@ namespace Modelo.Models
 {
     public class Pet
     {
-        public int Id { get; set; }
+        //public Pet()
+        //{
+        //    Consultas = new List<Consulta>();
+        //}
+        public long Id { get; set; }
         public string Nome { get; set; }
         public int Idade { get; set; }
         public string Sexo { get; set; }
