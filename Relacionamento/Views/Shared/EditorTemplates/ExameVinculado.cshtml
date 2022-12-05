@@ -1,0 +1,9 @@
+﻿@model ExameVinculado
+@using Relacionamento.Models.ViewModels;
+
+<fieldset heigth="100px">
+    @Html.HiddenFor(model => model.Id)
+    @Html.CheckBoxFor(model => model.Vinculado)
+    @Html.DisplayFor(model => model.Descricao)
+</fieldset>
+

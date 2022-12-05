@@ -19,11 +19,11 @@ namespace Persistencia.DAL
         }
         public Exame ObterExamePorId(long id)
         {
-            return context.Exames.Where(c => c.ExameId == id).First();
+            return context.Exames.Where(c => c.Id == id).First();
         }
         public void GravarExame(Exame exame)
         {
-            if (exame.ExameId == 0)
+            if (exame.Id == 0)
             {
                 context.Exames.Add(exame);
             }

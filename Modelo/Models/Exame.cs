@@ -9,9 +9,9 @@ namespace Modelo.Models
 {
     public class Exame
     {
-        public int ExameId { get; set; }
+        public int Id { get; set; }
         [DisplayName("Exame")]
         public string Descricao { get; set; }
-        public IList<Consulta> Consultas { get; set; }
+        public virtual ICollection<Consulta> Consultas { get; set; }
     }
 }

@@ -9,7 +9,8 @@ namespace Modelo.Models
 {
     public class Especie
     {
-        public int EspecieId { get; set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
+        public IList<Pet> Pets { get; set; }
     }
 }

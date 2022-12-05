@@ -1,0 +1,40 @@
+﻿@model Relacionamento.Models.ViewModels.ConsultaViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Tem certeza que deseja excluir?</h3>
+<div>
+    <h4>Consulta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.data_hora)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.data_hora)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sintomas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sintomas)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

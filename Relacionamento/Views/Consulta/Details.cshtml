@@ -1,0 +1,69 @@
+﻿@model Relacionamento.Models.ViewModels.ConsultaViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Consulta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.data_hora)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.data_hora)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sintomas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sintomas)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PetId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Veterinario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VeterinarioId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Exames)
+        </dt>
+        <dd>
+            @foreach (var exame in Model.Exames)
+            {
+                if (exame.Vinculado == true)
+                {
+                    <div>
+                        <li>@exame.Descricao</li>
+                    </div>
+                }
+
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
