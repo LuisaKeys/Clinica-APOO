@@ -24,79 +24,10 @@ namespace Relacionamento.Controllers
         private ConsultaServico consultaServico = new ConsultaServico();
         private PetServico petServico = new PetServico();
         private VeterinarioServico veterinarioServico = new VeterinarioServico();
-        private ExameDAL exameDAL = new ExameDAL();
+        private ExameServico exameServico = new ExameServico();
         private EFContext context = new EFContext();
 
-        //private ICollection<ExameVinculado> PopularExames()
-        //{
-        //    var exames = context.Exames;
-        //    var examesvinculados = new List<ExameVinculado>();
-
-        //    foreach (var item in exames)
-        //    {
-        //        examesvinculados.Add(new ExameVinculado
-        //        {
-        //            Id = item.Id,
-        //            Descricao = item.Descricao,
-        //            Vinculado = false
-        //        });
-        //    }
-
-        //    return examesvinculados;
-        //}
-
-        //private void AddOrUpdateExames(Consulta consulta, IEnumerable<ExameVinculado> examesvinculados)
-        //{
-        //    if (examesvinculados == null) return;
-
-        //    if (consulta.Id != 0)
-        //    {
-        //        // consulta existente - apaga exames existentes e adiciona novos (se tiver)
-        //        foreach (var exame in consulta.Exames.ToList())
-        //        {
-        //            consulta.Exames.Remove(exame);
-        //        }
-
-        //        foreach (var exame in examesvinculados.Where(c => c.Vinculado))
-        //        {
-        //            consulta.Exames.Add(context.Exames.Find(exame.Id));
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Nova Consulta
-        //        foreach (var exameVinculado in examesvinculados.Where(c => c.Vinculado))
-        //        {
-        //            var exame = new Exame { Id = exameVinculado.Id };
-        //            context.Exames.Attach(exame);
-        //            consulta.Exames.Add(exame);
-        //        }
-        //    }
-        //}
-
-        //private void AddOrUpdateKeepExistingExames(Consulta consulta, IEnumerable<ExameVinculado> examesVinculados)
-        //{
-        //    var webExameVinculadoId =  examesVinculados.Where(c => c.Vinculado).Select(webExame => webExame.Id);
-        //    var contextExameIDs = consulta.Exames.Select(contextExame => contextExame.Id);
-        //    var exameIDs = contextExameIDs as int[] ?? contextExameIDs.ToArray();
-        //    var examesToDeleteIDs = exameIDs.Where(id => !webExameVinculadoId.Contains(id)).ToList();
-
-        //    // Apaga exames removidos
-        //    foreach (var id in examesToDeleteIDs)
-        //    {
-        //       consulta.Exames.Remove(context.Exames.Find(id));
-        //    }
-
-        //    // Adiciona exames que não tenham sido usados
-        //    foreach (var id in webExameVinculadoId)
-        //    {
-        //        if (!exameIDs.Contains(id))
-        //        {
-        //            consulta.Exames.Add(context.Exames.Find(id));
-        //        }
-        //    }
-        //}
-
+       
 
         // ACTIONS ABAIXO
         // GET: Consultas
@@ -142,11 +73,11 @@ namespace Relacionamento.Controllers
         public ActionResult Edit(int id = 0)
         {
             //recupera todos os exames
-            //exameDAL.TodosExamesBD().ToList();
+            //exameServico.TodosExamesBD().ToList();
 
             //adiciona ou atualiza exames mantendo original
             var consulta = context.Consultas.Include("Exames").FirstOrDefault(x => x.Id == id);
-            var consultaViewModel = consulta.ToViewModel(exameDAL.TodosExamesBD().ToList());
+            var consultaViewModel = consulta.ToViewModel(exameServico.TodosExamesBD().ToList());
             ViewBag.PetId = new SelectList(context.Pets.OrderBy(b => b.Nome), "PetId", "Nome");
             ViewBag.VeterinarioId = new SelectList(context.Veterinarios.OrderBy(b => b.Nome),
             "Id", "Nome");
@@ -180,7 +111,7 @@ namespace Relacionamento.Controllers
         public ActionResult Details(int id = 0)
         {
             // retorna todos os exames
-            var todosExamesBD = exameDAL.TodosExamesBD().ToList();
+            var todosExamesBD = exameServico.TodosExamesBD().ToList();
 
             // retorna a consulta a ser editada e inclui os exames vinculados
             var consulta = context.Consultas.Include("Exames").FirstOrDefault(x => x.Id == id);
