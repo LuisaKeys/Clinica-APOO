@@ -1,7 +1,15 @@
 ﻿@model ExameVinculado
 @using Relacionamento.Models.ViewModels;
 
-<fieldset heigth="100px">
+<style>
+    .checkbox {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+</style>
+
+<fieldset heigth="100px" class="checkbox">
     @Html.HiddenFor(model => model.Id)
     @Html.CheckBoxFor(model => model.Vinculado)
     @Html.DisplayFor(model => model.Descricao)

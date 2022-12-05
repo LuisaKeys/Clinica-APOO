@@ -106,7 +106,7 @@ namespace Relacionamento.Controllers
         //GET: Create
         public ActionResult Create()
         {
-            ViewBag.PetId = new SelectList(context.Pets.OrderBy(b => b.Nome), "Id", "Nome");
+            ViewBag.PetId = new SelectList(context.Pets.OrderBy(b => b.Nome), "PetId", "Nome");
             ViewBag.VeterinarioId = new SelectList(context.Veterinarios.OrderBy(b => b.Nome),
             "Id", "Nome");
             var consultaViewModel = new ConsultaViewModel { Exames = PopularExames() };
@@ -142,7 +142,7 @@ namespace Relacionamento.Controllers
             //adiciona ou atualiza exames mantendo original
             var consulta = context.Consultas.Include("Exames").FirstOrDefault(x => x.Id == id);
             var consultaViewModel = consulta.ToViewModel(todosExamesBD);
-            ViewBag.PetId = new SelectList(context.Pets.OrderBy(b => b.Nome), "Id", "Nome");
+            ViewBag.PetId = new SelectList(context.Pets.OrderBy(b => b.Nome), "PetId", "Nome");
             ViewBag.VeterinarioId = new SelectList(context.Veterinarios.OrderBy(b => b.Nome),
             "Id", "Nome");
 
