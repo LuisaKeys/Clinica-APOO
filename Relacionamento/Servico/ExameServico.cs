@@ -15,6 +15,10 @@ namespace Relacionamento.Servico
         {
             return exameDAL.ObterExamesClassificadosPorDesc();
         }
+        public IQueryable<Exame> TodosExamesBD()
+        {
+            return exameDAL.TodosExamesBD();
+        }
         public Exame ObterExamePorId(long id)
         {
             return exameDAL.ObterExamePorId(id);
