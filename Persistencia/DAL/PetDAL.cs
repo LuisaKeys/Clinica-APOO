@@ -17,13 +17,14 @@ namespace Persistencia.DAL
         {
             return context.Pets.Include(c => c.Cliente).Include(f => f.Especie).OrderBy(n => n.Nome);
         }
+
         public Pet ObterPetPorId(long id)
         {
-            return context.Pets.Where(p => p.Id == id).Include(c => c.Cliente).Include(f => f.Especie).First();
+            return context.Pets.Where(b => b.PetId == id).Include(e => e.Especie).Include(c => c.Cliente).First();
         }
         public void GravarPet(Pet pet)
         {
-            if (pet.Id == null)
+            if (pet.PetId == 0)
             {
                 context.Pets.Add(pet);
             }

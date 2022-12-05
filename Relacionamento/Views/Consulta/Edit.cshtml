@@ -12,7 +12,7 @@
     @Html.ValidationSummary(true)
 
 <fieldset>
-    <legend>ConsultaViewModel</legend>
+    <legend>Consulta</legend>
 
     @Html.HiddenFor(x => x.Id)
 
@@ -34,7 +34,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PetId, htmlAttributes:
              new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
+        <div class="col-md-10">
             @Html.DropDownList("PetId", null, htmlAttributes:
                  new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.PetId, "",
@@ -44,7 +44,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.VeterinarioId, htmlAttributes:
              new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
+        <div class="col-md-10">
             @Html.DropDownList("VeterinarioId", null, htmlAttributes:
                  new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.VeterinarioId, "",
@@ -56,7 +56,7 @@
     @Html.EditorFor(x => x.Exames)
 
     <p>
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save" class="btn btn-warning" />
     </p>
 </fieldset>
 }
