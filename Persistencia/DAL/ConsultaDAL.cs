@@ -74,28 +74,6 @@ namespace Persistencia.DAL
                 }
             }
         }
-        public void AddOrUpdateKeepExistingExames(Consulta consulta, IEnumerable<ExameVinculado> examesVinculados)
-        {
-            var webExameVinculadoId = examesVinculados.Where(c => c.Vinculado).Select(webExame => webExame.Id);
-            var contextExameIDs = consulta.Exames.Select(contextExame => contextExame.Id);
-            var exameIDs = contextExameIDs as int[] ?? contextExameIDs.ToArray();
-            var examesToDeleteIDs = exameIDs.Where(id => !webExameVinculadoId.Contains(id)).ToList();
-
-            // Apaga exames removidos
-            foreach (var id in examesToDeleteIDs)
-            {
-                consulta.Exames.Remove(context.Exames.Find(id));
-            }
-
-            // Adiciona exames que não tenham sido usados
-            foreach (var id in webExameVinculadoId)
-            {
-                if (!exameIDs.Contains(id))
-                {
-                    consulta.Exames.Add(context.Exames.Find(id));
-                }
-            }
-        }
         public void GravarConsulta(Consulta consulta)
         {
             if (consulta.Id == 0)

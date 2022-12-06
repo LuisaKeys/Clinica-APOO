@@ -27,7 +27,28 @@ namespace Relacionamento.Controllers
         private ExameServico exameServico = new ExameServico();
         private EFContext context = new EFContext();
 
-       
+        public void AddOrUpdateKeepExistingExames(Consulta consulta, IEnumerable<ExameVinculado> examesVinculados)
+        {
+            var webExameVinculadoId = examesVinculados.Where(c => c.Vinculado).Select(webExame => webExame.Id);
+            var contextExameIDs = consulta.Exames.Select(contextExame => contextExame.Id);
+            var exameIDs = contextExameIDs as int[] ?? contextExameIDs.ToArray();
+            var examesToDeleteIDs = exameIDs.Where(id => !webExameVinculadoId.Contains(id)).ToList();
+
+            // Apaga exames removidos
+            foreach (var id in examesToDeleteIDs)
+            {
+                consulta.Exames.Remove(context.Exames.Find(id));
+            }
+
+            // Adiciona exames que não tenham sido usados
+            foreach (var id in webExameVinculadoId)
+            {
+                if (!exameIDs.Contains(id))
+                {
+                    consulta.Exames.Add(context.Exames.Find(id));
+                }
+            }
+        }
 
         // ACTIONS ABAIXO
         // GET: Consultas
@@ -65,7 +86,7 @@ namespace Relacionamento.Controllers
             ViewBag.PetId = new SelectList(petServico.ObterPetsClassificadosPorNome(),
             "PetId", "Nome");
             ViewBag.VeterinarioId = new SelectList(veterinarioServico.ObterVeterinariosClassificadosPorNome(),
-            "VeterinarioId", "Nome");
+            "Id", "Nome");
             return View(consultaViewModel);
         }
 
@@ -94,7 +115,7 @@ namespace Relacionamento.Controllers
                 var ConsultaOriginal = context.Consultas.Find(consultaViewModel.Id);
 
                 // adiciona ou atualiza mantendo original
-                consultaServico.AddOrUpdateKeepExistingExames(ConsultaOriginal, consultaViewModel.Exames);
+                AddOrUpdateKeepExistingExames(ConsultaOriginal, consultaViewModel.Exames);
 
                 context.Entry(ConsultaOriginal).CurrentValues.SetValues(consultaViewModel);
                 context.SaveChanges();

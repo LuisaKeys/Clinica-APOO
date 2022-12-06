@@ -13,28 +13,45 @@
 
 </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("VETIF", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Consulta", "Index", "Consulta")</li>
-                        <li>@Html.ActionLink("Cliente", "Index", "Cliente")</li>
-                        <li>@Html.ActionLink("Veterinario", "Index", "Veterinario")</li>
-                        <li>@Html.ActionLink("Pet", "Index", "Pet")</li>
-                        <li>@Html.ActionLink("Especie", "Index", "Especie")</li>
-                        <li>@Html.ActionLink("Exame", "Index", "Exame")</li>
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">VETIF</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="~/Views/Index">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Cliente/Index">Cliente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Consulta/Index">Consulta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Especie/">Especie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Exame/">Exame</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Pet/Index">Pet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Veterinario/">Veterinario</a>
+                    </li>
+
+
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
             </div>
-        </div>
+        </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />

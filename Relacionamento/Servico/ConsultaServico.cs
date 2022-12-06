@@ -37,10 +37,10 @@ namespace Relacionamento.Servico
         {
             consultaDAL.AddOrUpdateExames(consulta, examesvinculados);
         }
-        public void AddOrUpdateKeepExistingExames(Consulta consulta, IEnumerable<ExameVinculado> examesVinculados)
-        {
-            consultaDAL.AddOrUpdateKeepExistingExames(consulta, examesVinculados);
-        }
+        //public void AddOrUpdateKeepExistingExames(Consulta consulta, IEnumerable<ExameVinculado> examesVinculados)
+        //{
+        //    consultaDAL.AddOrUpdateKeepExistingExames(consulta, examesVinculados);
+        //}
         public void GravarConsulta(Consulta consulta)
         {
             consultaDAL.GravarConsulta(consulta);
