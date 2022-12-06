@@ -4,4 +4,13 @@
     <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+
 </Project>
